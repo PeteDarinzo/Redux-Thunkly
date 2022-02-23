@@ -1,0 +1,10 @@
+
+.NewPostForm {
+  margin-top: 45px;
+}
+
+.NewPostForm label {
+  width: 100%;
+  text-align: left;
+  font-weight: bold;
+}
