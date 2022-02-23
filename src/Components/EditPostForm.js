@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
-import { v4 as uuid } from "uuid";
 import "./NewPostForm.css";
 
 const EditPostForm = ({ id, title, description, body, editPost, toggleShowEdit }) => {

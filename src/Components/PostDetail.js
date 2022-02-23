@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
 import EditPostForm from "./EditPostForm";
+import CommentForm from "./CommentForm";
+import CommentList from "./CommentList";
 
-const PostDetail = ({ posts, editPost, deletePost }) => {
+const PostDetail = ({ posts, editPost, deletePost, addComment, deleteComment }) => {
 
   const { postId } = useParams();
   const history = useHistory();
 
-  const { title, description, body } = posts.find(p => postId === p.id);
-
+  const { title, description, body, comments } = posts.find(p => postId === p.id);
   const [showEdit, setShowEdit] = useState(false);
 
   const toggleShowEdit = () => {
@@ -53,6 +54,8 @@ const PostDetail = ({ posts, editPost, deletePost }) => {
               <p>{body}</p>
             </div>
           </Row>
+          <CommentList postId={postId} comments={comments} deleteComment={deleteComment} />
+          <CommentForm postId={postId} addComment={addComment} />
         </>
       }
     </Container>
