@@ -11,10 +11,10 @@ const NavBar = () => {
         <Nav vertical>
           <h1>THUNKLY</h1>
           <h4>The future of blogging, today</h4>
-          <NavItem>
+          <NavItem className="m-1">
             <NavLink exact to="/">Blog</NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem className="m-1">
             <NavLink to="/new">Add a new post</NavLink>
           </NavItem>
         </Nav>
