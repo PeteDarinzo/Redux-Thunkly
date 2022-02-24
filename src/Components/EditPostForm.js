@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { editPost } from "../Actions/actions";
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import "./NewPostForm.css";
+import PostList from "./PostList";
 
-const EditPostForm = ({ id, title, description, body, editPost, toggleShowEdit }) => {
+const EditPostForm = ({ id, title, description, body, toggleShowEdit }) => {
+
+  const dispatch = useDispatch();
 
   const initialState = {
     title,
@@ -22,12 +27,18 @@ const EditPostForm = ({ id, title, description, body, editPost, toggleShowEdit }
     }));
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    editPost(id, formData.title, formData.description, formData.body)
+  function handleEditPost(e) {
+    dispatch(editPost(id, formData.title, formData.description, formData.body));
     setFormData(initialState);
     history.push("/");
   }
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   editPost(id, formData.title, formData.description, formData.body)
+  //   setFormData(initialState);
+  //   history.push("/");
+  // }
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -38,7 +49,7 @@ const EditPostForm = ({ id, title, description, body, editPost, toggleShowEdit }
     <Container fluid>
       <Row className="justify-content-md-center">
         <Col xs={6} md={4}>
-          <Form onSubmit={handleSubmit} className="NewPostForm">
+          <Form onSubmit={handleEditPost} className="NewPostForm">
             <FormGroup>
               <Label htmlFor="title">Title:</Label>
               <Input

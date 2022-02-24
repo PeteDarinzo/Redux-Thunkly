@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
+import { useDispatch } from "react-redux";
+import { addPost } from "../Actions/actions";
 import { v4 as uuid } from "uuid";
 import "./NewPostForm.css";
 
-const NewPostForm = ({ addPost }) => {
-
+const NewPostForm = () => {
 
   const initialState = {
     title: "",
     description: "",
     body: ""
   };
+
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState(initialState);
   const history = useHistory();
@@ -24,18 +27,31 @@ const NewPostForm = ({ addPost }) => {
     }));
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addPost(uuid(), formData.title, formData.description, formData.body)
+  function handleAddPost(evt) {
+    dispatch(addPost(uuid(), formData.title, formData.description, formData.body));
     setFormData(initialState);
     history.push("/");
   }
 
+  function handleCancel(e) {
+    e.preventDefault();
+    setFormData(initialState);
+    history.push("/");
+  }
+
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   addPost(uuid(), formData.title, formData.description, formData.body)
+  //   setFormData(initialState);
+  //   history.push("/");
+  // }
+
   return (
     <Container fluid>
-      <Row className="justify-content-md-center">
+      <Row className="justify-content-center">
         <Col xs={6} md={4}>
-          <Form onSubmit={handleSubmit} className="NewPostForm">
+          <Form className="NewPostForm">
             <FormGroup>
               <Label htmlFor="title">Title:</Label>
               <Input
@@ -67,10 +83,10 @@ const NewPostForm = ({ addPost }) => {
                 onChange={handleChange}
                 placeholder="body" />
             </FormGroup>
-            <Button color="primary" className="m-1">
+            <Button color="primary" className="m-1" onClick={handleAddPost}>
               Save
             </Button>
-            <Button className="m-1">
+            <Button className="m-1" onClick={handleCancel}>
               Cancel
             </Button>
           </Form >

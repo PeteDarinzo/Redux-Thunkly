@@ -1,10 +1,9 @@
 import React from "react";
 import PostList from "./PostList";
 
-const Home = ({ posts }) => {
-
+const Home = () => {
   return (
-    <PostList posts={posts} />
+    <PostList />
   );
 }
 

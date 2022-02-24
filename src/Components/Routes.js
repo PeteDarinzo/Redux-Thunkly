@@ -1,26 +1,20 @@
 import React from "react";
-import { Switch, Route, Redirect, BrowserRouter } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import NewPostForm from "./NewPostForm";
 import Home from "./Home";
 import PostDetail from "./PostDetail";
 
-const Routes = ({ posts, addPost, editPost, deletePost, addComment, deleteComment }) => {
+const Routes = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Home posts={posts} />
+        <Home />
       </Route>
       <Route exact path="/new">
-        <NewPostForm addPost={addPost} />
+        <NewPostForm />
       </Route>
       <Route path="/:postId">
-        <PostDetail
-          posts={posts}
-          editPost={editPost}
-          deletePost={deletePost}
-          addComment={addComment}
-          deleteComment={deleteComment}
-        />
+        <PostDetail />
       </Route>
       <Redirect to="/" />
     </Switch>

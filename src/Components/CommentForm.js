@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import { addComment } from "../Actions/actions";
+import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import "./NewPostForm.css";
 
-const CommentForm = ({ postId, addComment }) => {
+const CommentForm = ({ postId }) => {
 
   const initialState = {
     text: ""
   };
 
+  const dispatch = useDispatch();
+
   const [formData, setFormData] = useState(initialState);
-  const history = useHistory();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,18 +23,16 @@ const CommentForm = ({ postId, addComment }) => {
     }));
   }
 
-  const handleSubmit = (e) => {
+  function handleAddComment(e) {
     e.preventDefault();
-    if (formData.text) {
-      addComment(postId, uuid(), formData.text);
-      setFormData(initialState);
-    }
+    dispatch(addComment(postId, uuid(), formData.text));
+    setFormData(initialState);
   }
 
   return (
     <Row className="justify-content-md-center">
       <Col>
-        <Form onSubmit={handleSubmit} className="NewPostForm">
+        <Form onSubmit={handleAddComment} className="NewPostForm">
           <FormGroup>
             <Label htmlFor="text">New Comment:</Label>
             <Input
@@ -45,7 +45,7 @@ const CommentForm = ({ postId, addComment }) => {
               required
             />
           </FormGroup>
-          <Button onClick={handleSubmit} className="m-1">
+          <Button className="m-1">
             Add
           </Button>
         </Form >

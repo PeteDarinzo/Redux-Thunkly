@@ -1,25 +1,35 @@
 import React, { useState } from "react";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { deletePost, deleteComment } from "../Actions/actions";
 import EditPostForm from "./EditPostForm";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
+import { Redirect } from "react-router-dom";
+import "./PostDetail.css";
 
-const PostDetail = ({ posts, editPost, deletePost, addComment, deleteComment }) => {
+const PostDetail = () => {
 
   const { postId } = useParams();
+  const posts = useSelector(store => store.posts);
+  const dispatch = useDispatch();
   const history = useHistory();
-
-  const { title, description, body, comments } = posts.find(p => postId === p.id);
   const [showEdit, setShowEdit] = useState(false);
+
+  const post = posts[postId];
+
+  if (!post) return (<Redirect to="/" />);
+
+  const { title, description, body, comments } = post;
 
   const toggleShowEdit = () => {
     setShowEdit(!showEdit);
   }
 
-  const handleDelete = (e) => {
+  function handleDeletePost(e) {
     e.preventDefault();
-    deletePost(postId);
+    dispatch(deletePost(postId))
     history.push("/");
   }
 
@@ -31,7 +41,6 @@ const PostDetail = ({ posts, editPost, deletePost, addComment, deleteComment }) 
           title={title}
           description={description}
           body={body}
-          editPost={editPost}
           toggleShowEdit={toggleShowEdit} />
         :
         <>
@@ -45,17 +54,17 @@ const PostDetail = ({ posts, editPost, deletePost, addComment, deleteComment }) 
             <Col>
               <div className="mt-3">
                 <Button color="primary" className="btn-sm" onClick={toggleShowEdit}>Edit</Button>
-                <Button color="danger" className="btn-sm mx-1" onClick={handleDelete}><span className="material-icons-outlined">Delete</span></Button>
+                <Button color="danger" className="btn-sm mx-1" onClick={handleDeletePost}><span className="material-icons-outlined">Delete</span></Button>
               </div>
             </Col>
           </Row>
           <Row>
-            <div>
+            <div className="PostDetail">
               <p>{body}</p>
             </div>
           </Row>
           <CommentList postId={postId} comments={comments} deleteComment={deleteComment} />
-          <CommentForm postId={postId} addComment={addComment} />
+          <CommentForm postId={postId} />
         </>
       }
     </Container>
