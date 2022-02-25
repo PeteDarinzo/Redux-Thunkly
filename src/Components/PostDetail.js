@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,19 +7,28 @@ import EditPostForm from "./EditPostForm";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import { Redirect } from "react-router-dom";
+import { fetchPost } from "../Actions/actions";
 import "./PostDetail.css";
 
 const PostDetail = () => {
 
   const { postId } = useParams();
-  const posts = useSelector(store => store.posts);
+  // const posts = useSelector(store => store.posts);
+
   const dispatch = useDispatch();
   const history = useHistory();
   const [showEdit, setShowEdit] = useState(false);
 
-  const post = posts[postId];
+  // const post = posts[postId];
 
-  if (!post) return (<Redirect to="/" />);
+  useEffect(() => {
+    console.log("dispatching to fetch post");
+    dispatch(fetchPost(postId));
+  }, []);
+
+  const post = useSelector(store => store.post);
+
+  // if (!post) return (<Redirect to="/" />);
 
   const { title, description, body, comments } = post;
 
@@ -63,7 +72,7 @@ const PostDetail = () => {
               <p>{body}</p>
             </div>
           </Row>
-          <CommentList postId={postId} comments={comments} deleteComment={deleteComment} />
+          {comments && <CommentList postId={postId} comments={comments} />}
           <CommentForm postId={postId} />
         </>
       }

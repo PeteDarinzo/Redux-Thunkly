@@ -3,13 +3,19 @@ import {
   EDIT_POST,
   DELETE_POST,
   ADD_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  FETCH_TITLES,
+  FETCH_POST
 } from "../Actions/actionTypes";
 
-const INTITIAL_STATE = { posts: {} };
+const INTITIAL_STATE = { titles: {}, post: {} };
 
 const rootReducer = (state = INTITIAL_STATE, action) => {
   switch (action.type) {
+    case FETCH_TITLES:
+      return { ...state, titles: action.titles };
+    case FETCH_POST:
+      return { ...state, post: action.post };
     case ADD_POST:
       return ({
         posts: {
@@ -22,21 +28,9 @@ const rootReducer = (state = INTITIAL_STATE, action) => {
         }
       });
     case EDIT_POST:
-      return {
-        posts: {
-          ...state.posts,
-          [action.id]: {
-            ...state.posts[action.id],
-            title: action.title,
-            description: action.description,
-            body: action.body,
-          }
-        }
-      }
+      return state;
     case DELETE_POST:
-      const updatedPosts = { ...state.posts };
-      delete updatedPosts[action.id];
-      return { posts: updatedPosts };
+      return { ...state, post: {} };
     case ADD_COMMENT:
       const addCommentPost = state.posts[action.postId];
       const addedComments = {
