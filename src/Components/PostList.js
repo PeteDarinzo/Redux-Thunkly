@@ -10,7 +10,6 @@ const PostList = () => {
 
   const titles = useSelector(store => store.titles);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchTitles());
   }, [dispatch]);
@@ -27,7 +26,7 @@ const PostList = () => {
 
   return (
     <div>
-      {titles.map(t => {
+      {titles && titles.map(t => {
         return (
           <Link
             key={t.id}
@@ -35,9 +34,9 @@ const PostList = () => {
             className="PostList-link">
             <p className="Postlist-title">{t.title}</p>
             <p><i>{t.description}</i></p>
-            <p>Votes: {t.votes}
-              <Button color="success" className="btn-sm" onClick={(e) => { handleUpvote(e, t.id) }}>Up</Button>
-              <Button color="danger" className="btn-sm mx-1" onClick={(e) => { handleDownvote(e, t.id) }}><span className="material-icons-outlined">Down</span></Button>
+            <p><span className="mx-2">Votes: {t.votes}</span>
+              <Button color="success" className="btn-sm" onClick={(e) => { handleUpvote(e, t.id) }}>Vote Up</Button>
+              <Button color="danger" className="btn-sm mx-1" onClick={(e) => { handleDownvote(e, t.id) }}>Vote Down</Button>
             </p>
           </Link>);
       })}

@@ -9,24 +9,20 @@ import CommentList from "./CommentList";
 import { Redirect } from "react-router-dom";
 import { fetchPost } from "../Actions/actions";
 import "./PostDetail.css";
+
+
 const PostDetail = () => {
 
   const { postId } = useParams();
-  // const posts = useSelector(store => store.posts);
-
   const dispatch = useDispatch();
   const history = useHistory();
   const [showEdit, setShowEdit] = useState(false);
-
-  // const post = posts[postId];
 
   useEffect(() => {
     dispatch(fetchPost(postId));
   }, []);
 
   const post = useSelector(store => store.post);
-
-  // if (postId !== post.id) return (<Redirect to="/" />);
 
   const { title, description, body, votes, comments } = post;
 
@@ -71,12 +67,12 @@ const PostDetail = () => {
             <Col>
               <div className="mt-3">
                 <Button color="primary" className="btn-sm" onClick={toggleShowEdit}>Edit</Button>
-                <Button color="danger" className="btn-sm mx-1" onClick={handleDeletePost}><span className="material-icons-outlined">Delete</span></Button>
+                <Button color="danger" className="btn-sm mx-1" onClick={handleDeletePost}>Delete</Button>
               </div>
               <div className="mt-3">
                 <span className="mx-2">Votes: {votes}</span>
-                <Button color="success" className="btn-sm" onClick={handleUpvote}>Upvote</Button>
-                <Button color="danger" className="btn-sm mx-1" onClick={handleDownvote}><span className="material-icons-outlined">Downvote</span></Button>
+                <Button color="success" className="btn-sm" onClick={handleUpvote}>Vote Up</Button>
+                <Button color="danger" className="btn-sm mx-1" onClick={handleDownvote}>Vote Down</Button>
               </div>
             </Col>
           </Row>

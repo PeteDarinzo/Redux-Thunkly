@@ -18,7 +18,6 @@ const API_URL = "http://localhost:5000"
 export function fetchTitles() {
   return async function (dispatch) {
     const res = await axios.get(`${API_URL}/api/posts`);
-    console.log(res.data);
     dispatch(gotTitles(res.data));
   }
 }
@@ -123,7 +122,6 @@ function titleVoted(id, votes) {
     votes
   }
 }
-
 
 /******ADD COMMENT ******/
 
