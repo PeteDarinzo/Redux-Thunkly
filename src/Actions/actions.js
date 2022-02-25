@@ -5,7 +5,9 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   FETCH_TITLES,
-  FETCH_POST
+  FETCH_POST,
+  VOTE_POST,
+  VOTE_TITLE
 } from "./actionTypes";
 import axios from "axios";
 
@@ -16,6 +18,7 @@ const API_URL = "http://localhost:5000"
 export function fetchTitles() {
   return async function (dispatch) {
     const res = await axios.get(`${API_URL}/api/posts`);
+    console.log(res.data);
     dispatch(gotTitles(res.data));
   }
 }
@@ -88,6 +91,39 @@ export function postDeleted() {
   }
 }
 
+/******VOTE POST ******/
+
+export function votePost(postId, direction) {
+  return async function (dispatch) {
+    const res = await axios.post(`${API_URL}/api/posts/${postId}/vote/${direction}`)
+    dispatch(postVoted(res.data.votes));
+  }
+}
+
+function postVoted(votes) {
+  return {
+    type: VOTE_POST,
+    votes
+  }
+}
+
+/******VOTE_TITLE  ******/
+
+export function voteTitle(postId, direction) {
+  return async function (dispatch) {
+    const res = await axios.post(`${API_URL}/api/posts/${postId}/vote/${direction}`)
+    dispatch(titleVoted(postId, res.data.votes));
+  }
+}
+
+function titleVoted(id, votes) {
+  return {
+    type: VOTE_TITLE,
+    id,
+    votes
+  }
+}
+
 
 /******ADD COMMENT ******/
 
@@ -120,3 +156,4 @@ function commentDeleted(id) {
     id
   }
 }
+

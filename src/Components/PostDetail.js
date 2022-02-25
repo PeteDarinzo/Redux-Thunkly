@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { deletePost } from "../Actions/actions";
+import { deletePost, votePost } from "../Actions/actions";
 import EditPostForm from "./EditPostForm";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
 import { Redirect } from "react-router-dom";
 import { fetchPost } from "../Actions/actions";
 import "./PostDetail.css";
-
 const PostDetail = () => {
 
   const { postId } = useParams();
@@ -29,10 +28,20 @@ const PostDetail = () => {
 
   // if (postId !== post.id) return (<Redirect to="/" />);
 
-  const { title, description, body, comments } = post;
+  const { title, description, body, votes, comments } = post;
 
   const toggleShowEdit = () => {
     setShowEdit(!showEdit);
+  }
+
+  function handleUpvote(e) {
+    e.preventDefault();
+    dispatch(votePost(postId, "up"));
+  }
+
+  function handleDownvote(e) {
+    e.preventDefault();
+    dispatch(votePost(postId, "down"));
   }
 
   function handleDeletePost(e) {
@@ -63,6 +72,11 @@ const PostDetail = () => {
               <div className="mt-3">
                 <Button color="primary" className="btn-sm" onClick={toggleShowEdit}>Edit</Button>
                 <Button color="danger" className="btn-sm mx-1" onClick={handleDeletePost}><span className="material-icons-outlined">Delete</span></Button>
+              </div>
+              <div className="mt-3">
+                <span className="mx-2">Votes: {votes}</span>
+                <Button color="success" className="btn-sm" onClick={handleUpvote}>Upvote</Button>
+                <Button color="danger" className="btn-sm mx-1" onClick={handleDownvote}><span className="material-icons-outlined">Downvote</span></Button>
               </div>
             </Col>
           </Row>

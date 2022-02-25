@@ -5,3 +5,5 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const FETCH_TITLES = "FETCH_TITLES";
 export const FETCH_POST = "FETCH_POST";
+export const VOTE_TITLE = "VOTE_TITLE";
+export const VOTE_POST = "VOTE_POST";
