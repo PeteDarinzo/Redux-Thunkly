@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Container, Row, Col } from 'reactstrap';
 import { useDispatch } from "react-redux";
 import { addPost } from "../Actions/actions";
-import { v4 as uuid } from "uuid";
 import "./NewPostForm.css";
 
 const NewPostForm = () => {
@@ -28,7 +27,7 @@ const NewPostForm = () => {
   }
 
   function handleAddPost(evt) {
-    dispatch(addPost(uuid(), formData.title, formData.description, formData.body));
+    dispatch(addPost(formData.title, formData.description, formData.body));
     setFormData(initialState);
     history.push("/");
   }
@@ -38,14 +37,6 @@ const NewPostForm = () => {
     setFormData(initialState);
     history.push("/");
   }
-
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   addPost(uuid(), formData.title, formData.description, formData.body)
-  //   setFormData(initialState);
-  //   history.push("/");
-  // }
 
   return (
     <Container fluid>

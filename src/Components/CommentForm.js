@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import { addComment } from "../Actions/actions";
 import { useDispatch } from "react-redux";
-import { v4 as uuid } from "uuid";
 import "./NewPostForm.css";
 
 const CommentForm = ({ postId }) => {
@@ -25,7 +24,7 @@ const CommentForm = ({ postId }) => {
 
   function handleAddComment(e) {
     e.preventDefault();
-    dispatch(addComment(postId, uuid(), formData.text));
+    dispatch(addComment(postId, formData.text));
     setFormData(initialState);
   }
 

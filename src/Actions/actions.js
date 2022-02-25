@@ -11,7 +11,8 @@ import axios from "axios";
 
 const API_URL = "http://localhost:5000"
 
-/****** FETCH TITLES */
+/****** FETCH TITLES ******/
+
 export function fetchTitles() {
   return async function (dispatch) {
     const res = await axios.get(`${API_URL}/api/posts`);
@@ -26,7 +27,8 @@ export function gotTitles(titles) {
   }
 }
 
-/****** FETCH POST */
+/****** FETCH POST ******/
+
 export function fetchPost(id) {
   return async function (dispatch) {
     const res = await axios.get(`${API_URL}/api/posts/${id}`);
@@ -41,7 +43,23 @@ export function gotPost(post) {
   }
 }
 
-/****** EDIT POST */
+/****** ADD POST ******/
+
+export function addPost(title, description, body) {
+  return async function (dispatch) {
+    const res = await axios.post(`${API_URL}/api/posts`, { title, description, body })
+    dispatch(postAdded());
+  }
+}
+
+function postAdded() {
+  return {
+    type: ADD_POST
+  }
+}
+
+/****** EDIT POST ******/
+
 export function editPost(id, title, description, body) {
   return async function (dispatch) {
     const res = await axios.put(`${API_URL}/api/posts/${id}`, { title, body, description })
@@ -55,7 +73,8 @@ function postEdited() {
   }
 }
 
-/****** DELETE POST */
+/****** DELETE POST ******/
+
 export function deletePost(id) {
   return async function (dispatch) {
     const res = await axios.delete(`${API_URL}/api/posts/${id}`);
@@ -69,38 +88,35 @@ export function postDeleted() {
   }
 }
 
-export function addPost(id, title, description, body) {
-  return {
-    type: ADD_POST,
-    id,
-    title,
-    description,
-    body
-  };
-}
 
+/******ADD COMMENT ******/
 
-
-// export function deletePost(id) {
-//   return {
-//     type: DELETE_POST,
-//     id
-//   }
-// }
-
-export function addComment(postId, id, text) {
-  return {
-    type: ADD_COMMENT,
-    postId,
-    id,
-    text
+export function addComment(postId, text) {
+  return async function (dispatch) {
+    const res = await axios.post(`${API_URL}/api/posts/${postId}/comments`, { text });
+    dispatch(commentAdded(res.data));
   }
 }
 
+function commentAdded(comment) {
+  return {
+    type: ADD_COMMENT,
+    comment
+  }
+}
+
+/******DELETE COMMENT *******/
+
 export function deleteComment(postId, id) {
+  return async function (dispatch) {
+    const res = await axios.delete(`${API_URL}/api/posts/${postId}/comments/${id}`);
+    dispatch(commentDeleted(id));
+  }
+}
+
+function commentDeleted(id) {
   return {
     type: DELETE_COMMENT,
-    postId,
     id
   }
 }

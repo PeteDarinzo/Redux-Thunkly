@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { Button, Container, Row, Col } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { deletePost, deleteComment } from "../Actions/actions";
+import { deletePost } from "../Actions/actions";
 import EditPostForm from "./EditPostForm";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
@@ -22,13 +22,12 @@ const PostDetail = () => {
   // const post = posts[postId];
 
   useEffect(() => {
-    console.log("dispatching to fetch post");
     dispatch(fetchPost(postId));
   }, []);
 
   const post = useSelector(store => store.post);
 
-  // if (!post) return (<Redirect to="/" />);
+  // if (postId !== post.id) return (<Redirect to="/" />);
 
   const { title, description, body, comments } = post;
 

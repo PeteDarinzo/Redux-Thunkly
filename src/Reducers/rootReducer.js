@@ -1,3 +1,4 @@
+import { AccordionBody } from "reactstrap";
 import {
   ADD_POST,
   EDIT_POST,
@@ -11,36 +12,23 @@ import {
 const INTITIAL_STATE = { titles: {}, post: {} };
 
 const rootReducer = (state = INTITIAL_STATE, action) => {
+  const post = state.post;
   switch (action.type) {
     case FETCH_TITLES:
       return { ...state, titles: action.titles };
     case FETCH_POST:
       return { ...state, post: action.post };
     case ADD_POST:
-      return ({
-        posts: {
-          ...state.posts, [action.id]: {
-            title: action.title,
-            description: action.description,
-            body: action.body,
-            comments: {}
-          }
-        }
-      });
+      return state;
     case EDIT_POST:
       return state;
     case DELETE_POST:
       return { ...state, post: {} };
     case ADD_COMMENT:
-      const addCommentPost = state.posts[action.postId];
-      const addedComments = {
-        ...state.posts, [action.postId]: { ...addCommentPost, comments: { ...addCommentPost.comments, [action.id]: action.text } }
-      }
-      return { posts: addedComments }
+      return { ...state, post: { ...post, comments: [...post.comments, { id: action.comment.id, text: action.comment.text }] } }
     case DELETE_COMMENT:
-      const deleteCommentPost = state.posts[action.postId];
-      delete deleteCommentPost.comments[action.id];
-      return { posts: { ...state.posts, [action.postId]: { ...deleteCommentPost } } }
+      const newComments = post.comments.filter(c => c.id !== action.id);
+      return { ...state, post: { ...post, comments: [...newComments] } }
     default:
       return state;
   }
