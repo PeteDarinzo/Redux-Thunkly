@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Button } from "reactstrap";
@@ -9,10 +9,23 @@ import { fetchTitles, voteTitle } from "../Actions/actions";
 const PostList = () => {
 
   const titles = useSelector(store => store.titles);
+
   const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    dispatch(fetchTitles());
-  }, [dispatch]);
+    async function loadTitles() {
+      await dispatch(fetchTitles());
+      setIsLoading(false);
+    }
+
+    if (isLoading) {
+      loadTitles();
+    }
+
+    // dispatch(fetchTitles());
+  }, [dispatch, isLoading]);
 
   function handleUpvote(e, postId) {
     e.preventDefault();
@@ -23,6 +36,8 @@ const PostList = () => {
     e.preventDefault();
     dispatch(voteTitle(postId, "down"));
   }
+
+  if (isLoading) return (<b>Loading...</b>);
 
   return (
     <div>

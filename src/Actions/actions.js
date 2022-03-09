@@ -50,13 +50,14 @@ export function gotPost(post) {
 export function addPost(title, description, body) {
   return async function (dispatch) {
     const res = await axios.post(`${API_URL}/api/posts`, { title, description, body })
-    dispatch(postAdded());
+    dispatch(postAdded(res.data));
   }
 }
 
-function postAdded() {
+function postAdded(post) {
   return {
-    type: ADD_POST
+    type: ADD_POST,
+    post
   }
 }
 
@@ -65,13 +66,14 @@ function postAdded() {
 export function editPost(id, title, description, body) {
   return async function (dispatch) {
     const res = await axios.put(`${API_URL}/api/posts/${id}`, { title, body, description })
-    dispatch(postEdited());
+    dispatch(postEdited(res.data));
   }
 }
 
-function postEdited() {
+function postEdited(post) {
   return {
-    type: EDIT_POST
+    type: EDIT_POST,
+    post
   }
 }
 
@@ -79,14 +81,15 @@ function postEdited() {
 
 export function deletePost(id) {
   return async function (dispatch) {
-    const res = await axios.delete(`${API_URL}/api/posts/${id}`);
-    dispatch(postDeleted());
+    await axios.delete(`${API_URL}/api/posts/${id}`);
+    dispatch(postDeleted(id));
   }
 }
 
-export function postDeleted() {
+export function postDeleted(id) {
   return {
-    type: DELETE_POST
+    type: DELETE_POST,
+    id
   }
 }
 
@@ -143,7 +146,7 @@ function commentAdded(comment) {
 
 export function deleteComment(postId, id) {
   return async function (dispatch) {
-    const res = await axios.delete(`${API_URL}/api/posts/${postId}/comments/${id}`);
+    await axios.delete(`${API_URL}/api/posts/${postId}/comments/${id}`);
     dispatch(commentDeleted(id));
   }
 }
